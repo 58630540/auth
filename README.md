@@ -2,7 +2,7 @@
 
 1. 下载组件包
    ```shell
-   composer require liujun/auth
+   composer require kabel-liujun/auth
    ```
 
 2. 发布配置文件
