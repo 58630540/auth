@@ -1,0 +1,24 @@
+{
+    "name": "liujun/auth",
+    "authors": [
+        {
+            "name": "liujun",
+            "email": "58630540@qq.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Liujun\\Auth\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Liujun\\Auth\\AuthServiceProvide"
+            ]
+        }
+    },
+    "require": {
+        "firebase/php-jwt": "^5.5"
+    }
+}
