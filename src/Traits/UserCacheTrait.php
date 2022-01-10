@@ -8,7 +8,7 @@
 
 namespace Liujun\Auth\Traits;
 
-use Liujun\Auth\Exception\UnauthorizedException;
+use Liujun\Auth\Exceptions\UnauthorizedException;
 
 trait UserCacheTrait
 {
