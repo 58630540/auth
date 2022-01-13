@@ -28,7 +28,7 @@ class CheckUserToken
         $user = $this->checkToken($token);
         $request->attributes->add(['user' => $user, 'token' => $user['token']]);
         $response = $next($request);
-        if (!$response->headers->get('Authorization')) {//没有设值就可刷新
+        if ($token != $user['token']) {//不等于之前的就刷新token
             $response->headers->set('Authorization', $user['token']);
         }
         return $response;
