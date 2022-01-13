@@ -9,6 +9,7 @@
 namespace Liujun\Auth\Traits;
 
 use Liujun\Auth\Exceptions\UnauthorizedException;
+use Liujun\Auth\Middleware\CheckUserToken;
 
 trait UserCacheTrait
 {
@@ -30,13 +31,12 @@ trait UserCacheTrait
     protected function _getUserId($isException = true)
     {
         $user = $this->_getUser($isException);
-        if (!$user) return false;
-        return $user['id'];
+        return $user['id']??0;
     }
 
     /**
      * 获取用户信息
-     * @return array|\Illuminate\Contracts\Auth\Authenticatable
+     * @return array
      * @throws UnauthorizedException
      */
     protected function _getUser($isException = true)
@@ -45,6 +45,14 @@ trait UserCacheTrait
         if (!$user) {
             if ($isException) {
                 throw new UnauthorizedException();
+            }else{
+                $Authorization = request()->header('Authorization');
+                $check = new CheckUserToken();
+                try {
+                    $user = $check->checkToken($Authorization);
+                }catch (\Exception $exception){
+                }
+                return $user['user']??[];
             }
         }
         return $user['user'];
@@ -61,7 +69,7 @@ trait UserCacheTrait
     protected function _getCompany($isException = true)
     {
         $user = $this->_getUser($isException);
-        return $user['company'];
+        return $user['company']??[];
     }
 
     /**
@@ -76,7 +84,7 @@ trait UserCacheTrait
     protected function _getCompanyId($isException = true)
     {
         $user = $this->_getUser($isException);
-        return $user['company']['id'];
+        return $user['company']['id']??0;
     }
 
     /**
@@ -93,7 +101,7 @@ trait UserCacheTrait
                 throw new UnauthorizedException();
             }
         }
-        return $user['app_id'];
+        return $user['app_id']??0;
     }
 
     /**
@@ -110,6 +118,6 @@ trait UserCacheTrait
                 throw new UnauthorizedException();
             }
         }
-        return $user['app_product_id'];
+        return $user['app_product_id']??0;
     }
 }

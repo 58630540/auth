@@ -41,7 +41,7 @@ class CheckUserToken
      * @return mixed
      * @throws
      */
-    protected function checkToken(string $token)
+    public function checkToken(string $token)
     {
         try {
             $key = config('kabel_auth.jwt.key');
