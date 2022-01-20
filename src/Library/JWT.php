@@ -84,8 +84,10 @@ class JWT
      * @uses jsonDecode
      * @uses urlsafeB64Decode
      */
-    public static function decode($jwt, $keyOrKeyArray, array $allowed_algs = array())
+    public static function decode($jwt,$config)
     {
+        $keyOrKeyArray = $config['key'];
+        $allowed_algs = $config['allowed'];
         $timestamp = \is_null(static::$timestamp) ? \time() : static::$timestamp;
 
         if (empty($keyOrKeyArray)) {
@@ -159,10 +161,10 @@ class JWT
 
         // Check if this token has expired.
         if (isset($payload->exp) && ($timestamp - static::$leeway) >= $payload->exp) {
-            if (($timestamp - $payload->exp) < config('kabel_auth.jwt.auto_renewal_threshold')) {//过期，低于指定的有效期则重新获取
-                $data = config('kabel_auth.jwt.conf');
+            if (($timestamp - $payload->exp) < $config['auto_renewal_threshold']) {//过期，低于指定的有效期则重新获取
+                $data = $config;
                 $data['userId'] = $payload->userId;
-                $token = self::encode($data, config('kabel_auth.jwt.key'));
+                $token = self::encode($data, $config['key']);
                 return ['token' => $token, 'data' => $payload];
             }
             throw new ExpiredException('Expired token');

@@ -49,7 +49,7 @@ trait UserCacheTrait
                 $Authorization = request()->header('Authorization');
                 $check = new CheckUserToken();
                 try {
-                    $user = $check->checkToken($Authorization);
+                    $user = $check->checkToken($Authorization,'user');
                 }catch (\Exception $exception){
                 }
                 return $user['user']??[];

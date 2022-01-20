@@ -21,14 +21,15 @@ class UserService extends KabelHttpSignService implements UserServiceInterface
 
     /**
      * 重新获取登录用户缓存
-     * @param $token
+     * @param  string  $token
+     * @param  string  $action
      * @return mixed
      * @throws UnauthorizedException
      */
-    public function getLoginUser($token)
+    public function getLoginUser(string $token,string $action)
     {
         try {
-            return $this->sendRequest(['token'=>$token],'/account/user/rpc/auth/getLoginUser');
+            return $this->sendRequest(['token'=>$token],'/account/'.$action.'/rpc/auth/getLoginUser');
         }catch (\Exception $exception){
             throw new UnauthorizedException();
         }
@@ -38,13 +39,14 @@ class UserService extends KabelHttpSignService implements UserServiceInterface
      * 续期更新用户TOKEN
      * @param $oldToken
      * @param $token
+     * @param $action
      * @return mixed
      * @throws UnauthorizedException
      */
-    public function updateToken($oldToken, $token)
+    public function updateToken($oldToken, $token,$action)
     {
         try {
-            return $this->sendRequest(['token'=>$token,'old_token'=>$oldToken,'_method'=>'post'],'/account/user/rpc/auth/updateToken');
+            return $this->sendRequest(['token'=>$token,'old_token'=>$oldToken,'_method'=>'post'],'/account/'.$action.'/rpc/auth/updateToken');
         }catch (\Exception $exception){
             throw new UnauthorizedException();
         }

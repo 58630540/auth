@@ -34,7 +34,7 @@ class AuthServiceProvide extends ServiceProvider
             __DIR__ . '/Config/kabel_auth_cache.php', 'database.redis'
         );
         $this->app->instance(RpcRequestInterface::class, $this->app->make(HttpRequest::class));
-        $this->app->instance(UserServiceInterface::class, $this->app->make(UserService::class));
+        $this->app->instance(UserServiceInterface::class, $this->app->make(config('kabel_auth.user_service') ?:UserService::class));
     }
 
     /**

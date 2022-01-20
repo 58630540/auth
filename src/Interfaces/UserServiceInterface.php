@@ -16,16 +16,18 @@ interface UserServiceInterface
 {
     /**
      * 重新获取登录用户缓存
-     * @param $token
+     * @param  string  $token
+     * @param  string  $action  客户端
      * @return mixed
      */
-    public function getLoginUser($token);
+    public function getLoginUser(string $token,string $action);
 
     /**
      * 续期更新用户TOKEN
-     * @param $oldToken
-     * @param $token
+     * @param  string  $oldToken
+     * @param  string  $token
+     * @param  string  $action  客户端
      * @return mixed
      */
-    public function updateToken($oldToken, $token);
+    public function updateToken(string $oldToken,string $token,string $action);
 }
