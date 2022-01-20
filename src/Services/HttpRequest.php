@@ -11,6 +11,7 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Liujun\Auth\Exceptions\RpcException;
 use Liujun\Auth\Interfaces\RpcRequestInterface;
 
 class HttpRequest implements RpcRequestInterface
