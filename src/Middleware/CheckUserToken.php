@@ -52,15 +52,17 @@ class CheckUserToken
             $cache = Redis::connection($action.'Auth');
             $cacheConf = $config['cache_key'];;
             $cacheKey = sprintf($cacheConf['key'], $userId);
-            $userInfo = $cache->get($cacheKey);
-            if (empty($userInfo)) {//缓存不存在，重新查询用户信息接口
+            $userCache = $cache->get($cacheKey);
+            if (empty($userCache)) {//缓存不存在，重新查询用户信息接口
                 $userInfo = app(UserServiceInterface::class)->getLoginUser($token,$action);
             } else {
-                $userInfo = json_decode($userInfo, true);
+                $userInfo['user'] = json_decode($userCache, true);
+                $userInfo['token'] = $token;
+                $userInfo['app_id'] = $jwt['data']->appId ?? '';
+                $userInfo['app_product_id'] = $jwt['data']->appProductId ?? '';
                 if ($jwt['token']) {//如果有token，说明续期了,要重新响应给前端
-                    $userInfo['token'] = $jwt['token'];
+                    $userInfo['token'] = $jwt['token'];//更新token
                     app(UserServiceInterface::class)->updateToken($token, $jwt['token'],$action);
-                    $cache->set($cacheKey, json_encode($userInfo), $cacheConf['expire']);//重新更新有效期
                 }
             }
             return $userInfo;
