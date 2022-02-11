@@ -47,6 +47,9 @@ trait UserCacheTrait
                 throw new UnauthorizedException();
             }else{
                 $Authorization = request()->header('Authorization');
+                if(!$Authorization){
+                    return  [];
+                }
                 $check = new CheckUserToken();
                 try {
                     $user = $check->checkToken($Authorization,'user');
