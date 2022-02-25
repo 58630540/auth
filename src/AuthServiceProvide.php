@@ -35,6 +35,12 @@ class AuthServiceProvide extends ServiceProvider
         );
         $this->app->instance(RpcRequestInterface::class, $this->app->make(HttpRequest::class));
         $this->app->instance(UserServiceInterface::class, $this->app->make(config('kabel_auth.user_service') ?:UserService::class));
+
+        $config = $this->app->make('config');
+
+        $config->set('kabel_sign.authSign', array_merge(
+            $config->get('kabel_auth.sign'), $config->get('kabel_sign.authSign', [])
+        ));
     }
 
     /**

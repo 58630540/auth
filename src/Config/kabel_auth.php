@@ -10,8 +10,10 @@
  */
 return [
     'sign'=>[//签名信息
-        'app_key' => env('KABEL_APP_KEY',''),
-        'secret' => env('KABEL_APP_SCRET',''),
+        'is_open' => true, // 是否开放签名
+        'timeout' => 5, // 签名过期时间 (秒)
+        'app_key' => env('SIGN_ACCOUNT_APP_KEY'),
+        'secret' => env('SIGN_ACCOUNT_APP_SECRET'),
     ],
     'exception_code'=>[//异常码
         'no_login' => [100,'请登录！']
