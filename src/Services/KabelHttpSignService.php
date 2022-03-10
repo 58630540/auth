@@ -1,6 +1,6 @@
 <?php
 /**
- * @Author: laoweizhen <1149243551@qq.com>,
+ * @Author: liujun <58630540@qq.com>,
  * @Date: 2021/12/6 21:49,
  * @LastEditTime: 2021/12/6 21:49
  */
@@ -14,7 +14,7 @@ use Liujun\Auth\Traits\KabelSignTrait;
 /**
  * Class KabelHttpService
  * @package Kabel
- * @author lwz
+ * @author liujun
  * kabel 签名请求接口
  */
 class KabelHttpSignService
@@ -45,7 +45,7 @@ class KabelHttpSignService
      * @param string|null $apiName 接口名称
      * @param int|null $cacheTime 缓存时间
      * @throws Exceptions\ValidateException
-     * @author lwz
+     * @author liujun
      */
     protected function sendRequest(array $params, string $apiUri, ?string $apiName = null, ?int $cacheTime = null)
     {

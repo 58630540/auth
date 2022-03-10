@@ -1,6 +1,6 @@
 <?php
 /**
- * @Author: laoweizhen <1149243551@qq.com>,
+ * @Author: liujun <58630540@qq.com>,
  * @Date: 2021/10/27 16:03,
  * @LastEditTime: 2021/10/27 16:03
  */
@@ -45,7 +45,7 @@ class AuthServiceProvide extends ServiceProvider
 
     /**
      * 发布模板文件
-     * @author lwz
+     * @author liujun
      */
     protected function registerPublishing()
     {
@@ -57,5 +57,4 @@ class AuthServiceProvide extends ServiceProvider
             ]);
         }
     }
-
 }

@@ -4,13 +4,15 @@ namespace Liujun\Auth\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redis;
+use Liujun\Auth\Exceptions\NotPermissionException;
 use Liujun\Auth\Exceptions\UnauthorizedException;
 use Liujun\Auth\Interfaces\UserServiceInterface;
 use Liujun\Auth\Library\JWT;
+use Liujun\Auth\Traits\AuthCacheTrait;
 
 class CheckUserToken
 {
+    use AuthCacheTrait;
     /**
      * Handle an incoming request.
      *
@@ -18,7 +20,7 @@ class CheckUserToken
      * @param  Closure  $next
      * @param  string  $action  来源端
      * @return mixed
-     * @throws UnauthorizedException
+     * @throws UnauthorizedException|NotPermissionException
      */
     public function handle(Request $request, Closure $next,string $action='user')
     {
@@ -27,6 +29,10 @@ class CheckUserToken
             throw new UnauthorizedException();
         }
         $user = $this->checkToken($token,$action);
+        if($action == 'user')
+        {//B端用户才验证权限
+            $this->checkApiPermissions($user);
+        }
         $request->attributes->add(['user' => $user, 'token' => $user['token']]);
         $response = $next($request);
         if ($token != $user['token']) {//不等于之前的就刷新token
@@ -46,28 +52,64 @@ class CheckUserToken
     {
         try {
             $config = config('kabel_auth.'.$action);
-            JWT::$leeway = 5;//当前时间减去5，把时间留点余地
             $jwt = JWT::decode($token,$config['jwt']);
-            $userId = $jwt['data']->userId ?? '';
-            $cache = Redis::connection($action.'Auth');
-            $cacheConf = $config['cache_key'];;
-            $cacheKey = sprintf($cacheConf['key'], $userId);
-            $userCache = $cache->get($cacheKey);
+            $jwtData = $jwt['data'];
+            $userId = $jwtData->userId ?? '';
+            $userCache = $this->getAuthCache($userId,'user',$action);
             if (empty($userCache)) {//缓存不存在，重新查询用户信息接口
-                $userInfo = app(UserServiceInterface::class)->getLoginUser($token,$action);
+                $user = app(UserServiceInterface::class)->getLoginUser($token,$action);
             } else {
-                $userInfo['user'] = json_decode($userCache, true);
-                $userInfo['token'] = $token;
-                $userInfo['app_id'] = $jwt['data']->appId ?? '';
-                $userInfo['app_product_id'] = $jwt['data']->appProductId ?? '';
+                $user['user'] = $userCache;
+                $user['token'] = $token;
+                $user['app_id'] = $jwtData->appId ?? '';
+                $user['app_product_id'] = $jwtData->appProductId ?? '';
                 if ($jwt['token']) {//如果有token，说明续期了,要重新响应给前端
-                    $userInfo['token'] = $jwt['token'];//更新token
+                    $user['token'] = $jwt['token'];//更新token
                     app(UserServiceInterface::class)->updateToken($token, $jwt['token'],$action);
                 }
             }
-            return $userInfo;
+            return $user;
         } catch (\Exception $e) {//其他错误
             throw new UnauthorizedException($e->getMessage(),$e->getCode());
+        }
+    }
+
+    /**
+     * 验证接口请求权限
+     * @param $user
+     * @return void
+     * @throws NotPermissionException
+     */
+    private function checkApiPermissions($user): void
+    {
+        $config = config('kabel_auth.user');
+        if(!isset($config['is_check_api_permissions']) || !$config['is_check_api_permissions'])
+        {//没开启，或者没有设置就不判断接口权限
+            return;
+        }
+        $userId = $user['user']['id'];
+        $appId = $user['app_id'];
+        $productId = $user['app_product_id'];
+
+        //获取应用产品所有需要判断的接口权限数组
+        $productPermissions = $this->getAuthCache($productId,'productApiPermission');
+        if ($productPermissions === null)
+        {//缓存不存在，重新查询用户信息接口
+            $productPermissions = app(UserServiceInterface::class)->getProductPermissions($productId);
+        }
+        if(!$productPermissions)
+        {//没有配置接口权限就不验证
+            return;
+        }
+        //获取当前用户API接口权限数组
+        $userPermissions = $this->getAuthCache($userId,'userApiPermission');
+        if ($userPermissions === null) {//缓存不存在，重新查询用户信息接口
+            $userPermissions = app(UserServiceInterface::class)->getPermissions($userId,$appId);
+        }
+        $path = '/'.\Illuminate\Support\Facades\Request::path();//获取请求路由路径
+        if(in_array($path,$productPermissions) && (!$userPermissions || !in_array($path,$userPermissions)))
+        {//当前地址有在当前产品权限列表里，并且当前用户没有权限列表或不在权限列表里表示没有权限
+            throw new NotPermissionException();
         }
     }
 }

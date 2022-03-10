@@ -1,6 +1,6 @@
 <?php
 /**
- * @Author: laoweizhen <1149243551@qq.com>,
+ * @Author: liujun <58630540@qq.com>,
  * @Date: 2021/12/6 21:40,
  * @LastEditTime: 2021/12/6 21:40
  */
@@ -47,6 +47,37 @@ class UserService extends KabelHttpSignService implements UserServiceInterface
     {
         try {
             return $this->sendRequest(['token'=>$token,'old_token'=>$oldToken,'_method'=>'post'],'/account/'.$action.'/rpc/auth/updateToken');
+        }catch (\Exception $exception){
+            throw new UnauthorizedException();
+        }
+    }
+
+    /**
+     * 获取用户权限数组
+     * @param  int  $userId
+     * @param  int  $appId
+     * @return mixed
+     * @throws UnauthorizedException
+     */
+    public function getPermissions(int $userId,int $appId)
+    {
+        try {
+            return $this->sendRequest(['user_id'=>$userId,'app_id'=>$appId],'/account/user/rpc/role/getApiPermissions');
+        }catch (\Exception $exception){
+            throw new UnauthorizedException();
+        }
+    }
+
+    /**
+     * 获取对应产品的所有权限
+     * @param  int  $productId  产品ID
+     * @return mixed
+     * @throws UnauthorizedException
+     */
+    public function getProductPermissions(int $productId)
+    {
+        try {
+            return $this->sendRequest(['product_id'=>$productId],'/account/app/rpc/app/getProductPermissions');
         }catch (\Exception $exception){
             throw new UnauthorizedException();
         }

@@ -1,6 +1,6 @@
 <?php
 /**
- * @Author: laoweizhen <1149243551@qq.com>,
+ * @Author: liujun <58630540@qq.com>,
  * @Date: 2021/12/02 11:48,
  * @LastEditTime: 2021/12/02 11:48
  */
@@ -80,7 +80,7 @@ class HttpRequest implements RpcRequestInterface
      * 设置响应的编号
      * @param int $code 请求编号
      * @return $this
-     * @author lwz
+     * @author liujun
      */
     public function setRspSuccessCode(int $code): HttpRequest
     {
@@ -92,7 +92,7 @@ class HttpRequest implements RpcRequestInterface
      * 设置响应编号字段
      * @param string $field 编号字段
      * @return HttpRequest
-     * @author lwz
+     * @author liujun
      */
     public function setRspCodeField(string $field): HttpRequest
     {
@@ -104,7 +104,7 @@ class HttpRequest implements RpcRequestInterface
      * 设置响应的数据字段
      * @param string $field 数据字段名
      * @return $this
-     * @author lwz
+     * @author liujun
      */
     public function setRspDataField(string $field): HttpRequest
     {
@@ -116,7 +116,7 @@ class HttpRequest implements RpcRequestInterface
      * 设置响应的消息字段
      * @param string $field 消息字段名
      * @return $this
-     * @author lwz
+     * @author liujun
      */
     public function setRspMsgField(string $field): HttpRequest
     {
@@ -128,7 +128,7 @@ class HttpRequest implements RpcRequestInterface
      * 设置缓存key前缀
      * @param string $prefix 前缀
      * @return HttpRequest
-     * @author lwz
+     * @author liujun
      */
     public function setCachePrefix(string $prefix): HttpRequest
     {
@@ -140,7 +140,7 @@ class HttpRequest implements RpcRequestInterface
      * 设置是否返回原始数据
      * @param bool $bool
      * @return HttpRequest
-     * @author lwz
+     * @author liujun
      */
     public function setOriData(bool $bool): HttpRequest
     {
@@ -176,7 +176,7 @@ class HttpRequest implements RpcRequestInterface
      *      headers：请求头数组
      * @return mixed
      * @throws RpcException|\Psr\SimpleCache\InvalidArgumentException
-     * @author lwz
+     * @author liujun
      */
     public function send(string $uri, array $params = [], ?int $cacheTime = null)
     {
@@ -209,7 +209,7 @@ class HttpRequest implements RpcRequestInterface
      * @param array $rqParams 表单请求参数
      * @return mixed
      * @throws RpcException
-     * @author lwz
+     * @author liujun
      */
     public function uploadFile(string $uri, array &$fileParams, array $rqParams = [])
     {
@@ -232,7 +232,7 @@ class HttpRequest implements RpcRequestInterface
      *      filename: 文件名
      *      headers：请求头数组
      * @throws RpcException
-     * @author lwz
+     * @author liujun
      */
     protected function handleRequest(string $uri, array &$params, ?array &$fileParams = null)
     {
@@ -290,7 +290,7 @@ class HttpRequest implements RpcRequestInterface
      * @param string|null $uri uri地址
      * @param string|null $host 请求域名
      * @return string
-     * @author lwz
+     * @author liujun
      */
     protected function getUrl(?string $uri, ?string $host = null): string
     {
@@ -302,7 +302,7 @@ class HttpRequest implements RpcRequestInterface
      * @param string $uri 请求uri
      * @param string $errMsg 错误信息
      * @return string
-     * @author lwz
+     * @author liujun
      */
     protected function getErrMsg(string $uri, string $errMsg): string
     {
@@ -314,7 +314,7 @@ class HttpRequest implements RpcRequestInterface
      * @param string $uri uri地址
      * @param array $params 请求参数
      * @return string
-     * @author lwz
+     * @author liujun
      */
     protected function getCacheKey(string $uri, array &$params): string
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * @Author: laoweizhen <1149243551@qq.com>,
+ * @Author: liujun <58630540@qq.com>,
  * @Date: 2021/12/6 21:42,
  * @LastEditTime: 2021/12/6 21:42
  */
@@ -30,4 +30,19 @@ interface UserServiceInterface
      * @return mixed
      */
     public function updateToken(string $oldToken,string $token,string $action);
+
+    /**
+     * 获取用户权限数组
+     * @param  int  $userId
+     * @param  int  $appId
+     * @return mixed
+     */
+    public function getPermissions(int $userId,int $appId);
+
+    /**
+     * 获取对应产品的所有权限
+     * @param  int  $productId  产品ID
+     * @return mixed
+     */
+    public function getProductPermissions(int $productId);
 }

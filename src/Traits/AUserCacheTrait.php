@@ -16,7 +16,7 @@ trait AUserCacheTrait
     /**
      * 获取token
      * @return mixed
-     * @author lwz
+     * @author liujun
      */
     protected function _getToken()
     {

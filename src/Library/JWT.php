@@ -88,6 +88,7 @@ class JWT
     {
         $keyOrKeyArray = $config['key'];
         $allowed_algs = $config['allowed'];
+        static::$leeway = $config['leeway'];//当前时间减去5，把时间留点余地
         $timestamp = \is_null(static::$timestamp) ? \time() : static::$timestamp;
 
         if (empty($keyOrKeyArray)) {
@@ -162,8 +163,10 @@ class JWT
         // Check if this token has expired.
         if (isset($payload->exp) && ($timestamp - static::$leeway) >= $payload->exp) {
             if (($timestamp - $payload->exp) < $config['auto_renewal_threshold']) {//过期，低于指定的有效期则重新获取
-                $data = $config;
+                $data = $config['conf'];
                 $data['userId'] = $payload->userId;
+                isset($payload->appProductId) && $data['appProductId'] = $payload->appProductId;
+                isset($payload->appId) && $data['appId'] = $payload->appId;
                 $token = self::encode($data, $config['key']);
                 return ['token' => $token, 'data' => $payload];
             }

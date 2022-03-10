@@ -16,7 +16,8 @@ return [
         'secret' => env('SIGN_ACCOUNT_APP_SECRET'),
     ],
     'exception_code'=>[//异常码
-        'no_login' => [100,'请登录！']
+        'no_login' => [100,'请登录！'],
+        'no_permission' => [107,'操作失败，权限不足！'],
     ],
     'api_host'=>[//外部依赖接口域名
         'saas_api' =>  env('SAAS_API_HOST', 'https://api.paiplus.cn')
@@ -42,8 +43,17 @@ return [
         ],
         'cache_key' => [
             'key' =>'user:loginCache:' . '%s',//%s为用户ID
+            'expire' => 3600 * 24
+        ],
+        'user_permissions_cache_key'=>[
+            'key' =>'user:userPermissions:' . '%s',//%s为用户ID
+            'expire' => 3600 * 24
+        ],
+        'product_all_permissions_cache_key'=>[
+            'key' =>'user:productPermissions:' . '%s',//%s为产品ID
             'expire' => 3600 * 24 * 30
         ],
+        'is_check_api_permissions'=>env('IS_CHECK_API_PERMISSIONS',true)
     ],
     'cUser'=>[//C端商城用户
         'jwt'=>[//JWT 相关配置
@@ -89,6 +99,6 @@ return [
         'cache_key' => [
             'key' =>'aUser:loginCache:' . '%s',//%s为用户ID
             'expire' => 3600 * 24 * 30
-        ],
+        ]
     ]
 ];

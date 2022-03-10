@@ -1,6 +1,6 @@
 <?php
 /**
- * @Author: laoweizhen <1149243551@qq.com>,
+ * @Author: liujun <58630540@qq.com>,
  * @Date: 2021/12/02 11:06,
  * @LastEditTime: 2021/12/02 11:06
  */
@@ -27,7 +27,7 @@ interface RpcRequestInterface
      * @param array $params 请求参数
      * @param int|null $cacheTime 缓存时间(如果没传直接调用接口，如果传了先查缓存再调接口)
      * @return mixed
-     * @author lwz
+     * @author liujun
      */
     public function send(string $uri, array $params = [], ?int $cacheTime = null);
 
@@ -43,7 +43,7 @@ interface RpcRequestInterface
      *      headers：请求头数组
      * @param array $rqParams 表单请求参数
      * @return mixed
-     * @author lwz
+     * @author liujun
      */
     public function uploadFile(string $uri, array &$fileParams, array $rqParams = []);
 }
