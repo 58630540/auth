@@ -20,7 +20,7 @@
         }
     },
     "require": {
-        "firebase/php-jwt": "^5.5",
+        "firebase/php-jwt": "5.5.1",
         "yzw/kabel-sign": "^1.17"
     }
 }
