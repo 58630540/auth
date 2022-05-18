@@ -66,10 +66,10 @@ trait CUserCacheTrait
                     $user = $check->checkToken($Authorization,'cUser');
                 }catch (\Exception $exception){
                 }
-                return $user??[];
+                return $user['user']??[];
             }
         }
-        return $user;
+        return $user['user'];
     }
 
     /**
