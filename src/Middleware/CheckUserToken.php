@@ -26,8 +26,9 @@ class CheckUserToken
     {
         $token = $request->headers->get('authorization', '');
         if (!$token) {
-            throw new UnauthorizedException();
+            throw new UnauthorizedException('',0,$action);
         }
+        $token = str_replace('Bearer ', '', $token);
         $user = $this->checkToken($token,$action);
         if($action == 'user')
         {//B端用户才验证权限
@@ -70,7 +71,7 @@ class CheckUserToken
             }
             return $user;
         } catch (\Exception $e) {//其他错误
-            throw new UnauthorizedException($e->getMessage(),$e->getCode());
+            throw new UnauthorizedException($e->getMessage(),$e->getCode(),$action);
         }
     }
 

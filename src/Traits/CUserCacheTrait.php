@@ -55,7 +55,7 @@ trait CUserCacheTrait
         $user = request()->attributes->get('user');
         if (!$user) {
             if ($isException) {
-                throw new UnauthorizedException();
+                throw new UnauthorizedException('',0,'Cuser');
             }else{
                 $Authorization = request()->header('Authorization');
                 if(!$Authorization){
@@ -70,6 +70,28 @@ trait CUserCacheTrait
             }
         }
         return $user;
+    }
+
+    /**
+     * 获取企业ID
+     * @param  bool  $isException
+     * @return int|mixed
+     * @throws UnauthorizedException
+     */
+    protected function _getCompanyId($isException = true){
+        $user = $this->_getUser($isException);
+        return $user['company_id']??0;
+    }
+
+    /**
+     * 获取门店ID
+     * @param  bool  $isException
+     * @return int|mixed
+     * @throws UnauthorizedException
+     */
+    protected function _getStoreId($isException = true){
+        $user = $this->_getUser($isException);
+        return $user['store_id']??0;
     }
 
 }

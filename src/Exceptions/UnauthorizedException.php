@@ -20,9 +20,15 @@ class UnauthorizedException extends \Exception
 {
     public bool $showOriMsg = true; // 是否显示原始异常信息
 
-    public function __construct($message = "", $code = 0, Throwable $previous = null)
+    public function __construct($message = "", $code = 0,$action='user', Throwable $previous = null)
     {
-        $this->code =$code?: config('kabel_auth.exception_code.no_login')[0];
-        $this->message =$code?$message: config('kabel_auth.exception_code.no_login')[1];
+        if($action == 'cUser'){
+            $this->code =$code?: config('kabel_auth.exception_code.cUser_no_login')[0];
+            $this->message =$code?$message: config('kabel_auth.exception_code.cUser_no_login')[1];
+        }else{
+            $this->code =$code?: config('kabel_auth.exception_code.no_login')[0];
+            $this->message =$code?$message: config('kabel_auth.exception_code.no_login')[1];
+        }
+
     }
 }

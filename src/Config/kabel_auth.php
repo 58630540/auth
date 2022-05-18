@@ -17,6 +17,7 @@ return [
     ],
     'exception_code'=>[//异常码
         'no_login' => [100,'请登录！'],
+        'cUser_no_login' => [1014,'请登录！'],//兼容C端用户的未登录状态码
         'no_permission' => [107,'操作失败，权限不足！'],
     ],
     'api_host'=>[//外部依赖接口域名
