@@ -167,6 +167,7 @@ class JWT
                 $data['userId'] = $payload->userId;
                 isset($payload->appProductId) && $data['appProductId'] = $payload->appProductId;
                 isset($payload->appId) && $data['appId'] = $payload->appId;
+                isset($payload->companyId) && $data['companyId'] = $payload->companyId;
                 $token = self::encode($data, $config['key']);
                 return ['token' => $token, 'data' => $payload];
             }

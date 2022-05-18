@@ -79,7 +79,7 @@ trait CUserCacheTrait
      * @throws UnauthorizedException
      */
     protected function _getCompanyId($isException = true){
-        $user = $this->_getUser($isException);
+        $user = request()->attributes->get('user');
         return $user['company_id']??0;
     }
 

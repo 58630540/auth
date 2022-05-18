@@ -59,9 +59,11 @@ class CheckUserToken
             $userCache = $this->getAuthCache($userId,'user',$action);
             if (empty($userCache)) {//缓存不存在，重新查询用户信息接口
                 $user = app(UserServiceInterface::class)->getLoginUser($token,$action);
+                $user['company_id'] = $jwtData->companyId ?? '';
             } else {
                 $user['user'] = $userCache;
                 $user['token'] = $token;
+                $user['company_id'] = $jwtData->companyId ?? '';
                 $user['app_id'] = $jwtData->appId ?? '';
                 $user['app_product_id'] = $jwtData->appProductId ?? '';
                 if ($jwt['token']) {//如果有token，说明续期了,要重新响应给前端
