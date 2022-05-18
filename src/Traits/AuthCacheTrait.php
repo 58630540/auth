@@ -23,7 +23,7 @@ trait AuthCacheTrait
      * @return mixed
      * @throws exception
      */
-    public function setAuthCache(int $id,string $type,array $data,string $action='user')
+    public function setAuthCache($id,string $type,array $data,string $action='user')
     {
         return $this->exec('set',$id,$type,$action,$data);
     }
@@ -36,7 +36,7 @@ trait AuthCacheTrait
      * @return mixed
      * @throws exception
      */
-    public function getAuthCache(int $id,string $type,string $action='user')
+    public function getAuthCache($id,string $type,string $action='user')
     {
         return $this->exec('get',$id,$type,$action);
     }
