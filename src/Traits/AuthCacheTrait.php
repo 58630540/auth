@@ -16,8 +16,12 @@ trait AuthCacheTrait
 {
     /**
      *  设置缓存
-     * @param  int  $id  type为 user、UserApiPermission 传用户ID,为 productApiPermission 传应用产品ID
-     * @param  string  $type  缓存类型:user 用户接口权限缓存 UserApiPermission  productApiPermission 应用产品接口权限缓存
+     * @param  int  $id  type为 user、UserApiPermission、blackList 传用户ID,为 productApiPermission 传应用产品ID
+     * @param  string  $type  缓存类型:
+     *                  user 用户缓存
+     *                  UserApiPermission 用户接口权限缓存
+     *                  productApiPermission 应用产品接口权限缓存
+     *                  blackList 黑名单列表
      * @param  array  $data  缓存的数据
      * @param  string  $action  用户类型 user B端用户  cUser C端用户  aUser 活动端用户
      * @return mixed
@@ -30,8 +34,12 @@ trait AuthCacheTrait
 
     /**
      * 获取指定产品的API接口权限缓存
-     * @param  int  $id type为 user、UserApiPermission 传用户ID,为 productApiPermission 传应用产品ID
-     * @param  string  $type 缓存类型:user 用户接口权限缓存 UserApiPermission  productApiPermission 应用产品接口权限缓存
+     * @param  int  $id type为 user、UserApiPermission、blackList 传用户ID,为 productApiPermission 传应用产品ID
+     * @param  string  $type 缓存类型:
+     *                      user 用户缓存
+     *                      UserApiPermission 用户接口权限
+     *                      productApiPermission 应用产品接口权限
+     *                      blackList 黑名单列表
      * @param  string  $action 用户类型 user B端用户  cUser C端用户  aUser 活动端用户
      * @return mixed
      * @throws exception
@@ -43,8 +51,12 @@ trait AuthCacheTrait
 
     /**
      * 清除产品接口权限缓存
-     * @param array|int $id  type为 user、UserApiPermission 传用户ID,为 productApiPermission 传应用产品ID
-     * @param  string  $type  缓存类型:user 用户接口权限缓存 UserApiPermission  productApiPermission 应用产品接口权限缓存
+     * @param array|int $id  type为 user、UserApiPermission、blackList 传用户ID,为 productApiPermission 传应用产品ID
+     * @param  string  $type 缓存类型:
+     *                      user 用户缓存
+     *                      UserApiPermission 用户接口权限
+     *                      productApiPermission 应用产品接口权限
+     *                      blackList 黑名单列表
      * @param  string  $action 用户类型 user B端用户  cUser C端用户  aUser 活动端用户
      * @return mixed
      * @throws exception
@@ -57,8 +69,12 @@ trait AuthCacheTrait
     /**
      * 执行redis 命令
      * @param  string  $cmd redis 命令
-     * @param  array|int $id   type为 user、UserApiPermission 传用户ID,为 productApiPermission 传应用产品ID
-     * @param  string  $type 缓存类型:user 用户接口权限缓存 UserApiPermission  productApiPermission 应用产品接口权限缓存
+     * @param  array|int $id   type为 user、UserApiPermission、blackList 传用户ID 传用户ID,为 productApiPermission 传应用产品ID
+     * @param  string  $type 缓存类型:
+     *                      user 用户缓存
+     *                      UserApiPermission 用户接口权限
+     *                      productApiPermission 应用产品接口权限
+     *                      blackList 黑名单列表
      * @param  array|null  $data $cmd 为 set 传的数据
      * @param  string  $action 用户类型 user B端用户  cUser C端用户  aUser 活动端用户
      * @return mixed
@@ -96,7 +112,11 @@ trait AuthCacheTrait
 
     /**
      * 获取缓存key
-     * @param  string  $type  $type 缓存类型:user 用户接口权限缓存 UserApiPermission  productApiPermission 应用产品接口权限缓存
+     * @param  string  $type 缓存类型:
+     *                      user 用户缓存
+     *                      UserApiPermission 用户接口权限
+     *                      productApiPermission 应用产品接口权限
+     *                      blackList 黑名单列表
      * @param  string  $action  用户类型 user B端用户  cUser C端用户  aUser 活动端用户
      * @return array
      * @throws exception
@@ -106,7 +126,8 @@ trait AuthCacheTrait
         $typeMapping = [
             'productApiPermission'=>'product_all_permissions_cache_key',
             'userApiPermission'=>'user_permissions_cache_key',
-            'user'=>'cache_key'
+            'user'=>'cache_key',
+            'blackList'=>'black_cache_key'
         ];
         if(!isset($typeMapping[$type]))
         {

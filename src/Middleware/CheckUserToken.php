@@ -56,6 +56,7 @@ class CheckUserToken
             $jwt = JWT::decode($token,$config['jwt']);
             $jwtData = $jwt['data'];
             $userId = $jwtData->userId ?? '';
+            $this->checkBlack($userId,$jwtData,$action);//检查黑名单
             $userCache = $this->getAuthCache($userId,'user',$action);
             if (empty($userCache)) {//缓存不存在，重新查询用户信息接口
                 $user = app(UserServiceInterface::class)->getLoginUser($token,$action);
@@ -113,6 +114,25 @@ class CheckUserToken
         if(in_array($path,$productPermissions) && (!$userPermissions || !in_array($path,$userPermissions)))
         {//当前地址有在当前产品权限列表里，并且当前用户没有权限列表或不在权限列表里表示没有权限
             throw new NotPermissionException();
+        }
+    }
+
+    /**
+     * 黑名单检测
+     * @param $id
+     * @param $jwtPayload
+     * @param  string  $action
+     * @throws \exception
+     */
+    private function checkBlack($id,$jwtPayload,$action='user')
+    {
+        if($action !='user'){
+            return;
+        }
+        $info = $this->getAuthCache($id,$jwtPayload->iat,$action);//查询此用户黑名单缓存是否存在
+        if($info && $jwtPayload->iat <= $info->iat )
+        {//黑名单存在，并且当前token创建时间是小于加入黑名单时间，则直接抛未登录异常
+            throw new UnauthorizedException('',0,$action);
         }
     }
 }

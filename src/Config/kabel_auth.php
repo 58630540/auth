@@ -54,6 +54,10 @@ return [
             'key' =>'user:productPermissions:' . '%s',//%s为产品ID
             'expire' => 3600 * 24 * 30
         ],
+        'black_cache_key'=>[
+            'key' =>'user:black:' . '%s',//%s为用户ID
+            'expire' => 3600 * 24 * 30
+        ],
         'is_check_api_permissions'=>env('IS_CHECK_API_PERMISSIONS',true)
     ],
     'cUser'=>[//C端商城用户
@@ -78,6 +82,10 @@ return [
             'key' =>'cUser:loginCache:' . '%s',//%s为用户ID
             'expire' => 3600 * 24 * 30
         ],
+        'black_cache_key'=>[
+            'key' =>'cUser:black:' . '%s',//%s为用户ID
+            'expire' => 3600 * 24
+        ]
     ],
     'aUser'=>[//C端活动用户
         'jwt'=>[//JWT 相关配置
@@ -100,6 +108,10 @@ return [
         'cache_key' => [
             'key' =>'aUser:loginCache:' . '%s',//%s为用户ID
             'expire' => 3600 * 24 * 30
+        ],
+        'black_cache_key'=>[
+            'key' =>'cUser:black:' . '%s',//%s为用户ID
+            'expire' => 3600 * 24
         ]
     ]
 ];
