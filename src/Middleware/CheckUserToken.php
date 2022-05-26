@@ -129,8 +129,8 @@ class CheckUserToken
         if($action !='user'){
             return;
         }
-        $info = $this->getAuthCache($id,$jwtPayload->iat,$action);//查询此用户黑名单缓存是否存在
-        if($info && $jwtPayload->iat <= $info->iat )
+        $info = $this->getAuthCache($id,'blackList',$action);//查询此用户黑名单缓存是否存在
+        if($info && $jwtPayload->iat <= $info['iat'] )
         {//黑名单存在，并且当前token创建时间是小于加入黑名单时间，则直接抛未登录异常
             throw new UnauthorizedException('',0,$action);
         }
